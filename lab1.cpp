@@ -1,5 +1,7 @@
-//modified by:
-//date:
+//modified by: Mario Jimenez
+//date: 08/29/2023
+// Made the color of the moving box change based upon the rate
+// at which it is bouncing off the left and right walls.
 //
 //author: Gordon Griesel
 //date: Spring 2022
@@ -17,7 +19,6 @@ using namespace std;
 #include <X11/keysym.h>
 #include <GL/glx.h>
 
-
 //some structures
 
 class Global {
@@ -30,7 +31,7 @@ public:
 	    xres = 400;
 	    yres = 200;
 	    w = 20.0f;
-	    dir = 1.0f;
+	    dir = 10.0f;
 	    pos[0] = 0.0f + w;
 	    pos[1] = yres / 2.0f;
 	}
@@ -58,7 +59,6 @@ public:
 void init_opengl(void);
 void physics(void);
 void render(void);
-
 
 
 //=====================================
@@ -271,9 +271,22 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw box.
 	glPushMatrix();
-	glColor3f(1.0, 0.0, 0.0);
+	//glColor3f(1.0, 0.0, 0.0);
 	//glColor3f(0.0, 0.0, 1.0);
 	//glColor3ub(150, 160, 220);
+	if (g.xres < 420 ) {
+		glColor3f(1.0, 0.0, 0.0); // Red
+	}
+	else if (g.xres > 520) {
+		glColor3f(0.0, 0.0, 1.0); // Blue
+	}
+	else {
+		glColor3f(0.0, 1.0, 0.0); // Green
+	}
+	if (g.xres <= 60) {
+		glPopMatrix();
+		// Delete box
+	}
 	glTranslatef(g.pos[0], g.pos[1], 0.0f);
 	glBegin(GL_QUADS);
 		glVertex2f(-g.w, -g.w);
@@ -283,9 +296,3 @@ void render()
 	glEnd();
 	glPopMatrix();
 }
-
-
-
-
-
-
